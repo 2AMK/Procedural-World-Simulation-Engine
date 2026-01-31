@@ -17,5 +17,9 @@ class Chunk:
     """
     # Atualmente em progresso. Haverá mais adições em breve.
     def __init__(self, x,z):
+        x : int
+        z : int
+        
+         # Coordenadas do chunk no plano XZ
         self.x = x
         self.z = z
