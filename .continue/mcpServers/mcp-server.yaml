@@ -1,0 +1,11 @@
+name: MCP Server for Procedural World Gen
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: MCP server for Procedural World Gen
+    command: "C:/Users/alark/anaconda3/envs/projeto_world_gen/python.exe"
+    args:
+      [C:/Users/alark/OneDrive/Documentos/GitHub/Procedural-World-Simulation-Engine-MCP-Server/server.py]
+    cwd: C:/Users/alark/OneDrive/Documentos/GitHub/Procedural-World-Simulation-Engine/
+    connectionTimeout: 60000
+    type: stdio

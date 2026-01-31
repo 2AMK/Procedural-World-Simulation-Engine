@@ -1,0 +1,13 @@
+id: stone
+name: Stone
+description: A hard, solid mineral material commonly found in the Earth's crust.
+tags:
+  - solid
+  - natural
+  - rock
+
+properties:
+  color: gray
+  density: 2.5
+  hardness: 7
+

@@ -1,0 +1,10 @@
+id: plains_layer_profile
+
+layers:
+  - material_id: stone
+    y_min: 1
+    y_max: 60
+
+  - material_id: soil
+    y_min: 61
+    y_max: top # determined by the world gen noise

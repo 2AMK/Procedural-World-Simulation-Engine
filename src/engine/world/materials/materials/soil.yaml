@@ -1,0 +1,13 @@
+id: soil
+name: Soil
+description: A loose mixture of organic matter, minerals, gases, liquids, and organisms that together support life on Earth.
+tags:
+  - loose
+  - natural
+  - organic
+
+properties:
+  color: brown
+  density: 1.3
+  hardness: 2
+
