@@ -8,7 +8,7 @@ from pathlib import Path
 from textwrap import dedent
 from yaml import YAMLError
 
-from src.utils.yaml_loader import YamlFileLoader, YamlDirectoryLoader
+from src.engine.config.loaders.yaml_loader import YamlFileLoader, YamlDirectoryLoader
 
 class TestYamlFileLoader:
     @pytest.fixture
@@ -64,7 +64,7 @@ class TestYamlFileLoader:
         """
         Testa o carregamento bem-sucedido de um arquivo YAML.
         """
-        result = YamlFileLoader.load_yaml_file(yaml_file_valid)
+        result = YamlFileLoader.load_file(yaml_file_valid)
         assert result is not None
         assert result['id'] == 'plains_layer_profile'
         assert len(result['layers']) == 2
@@ -77,14 +77,14 @@ class TestYamlFileLoader:
         """
         nonexistent_file = tmp_path / "nonexistent.yaml"
         with pytest.raises(FileNotFoundError):
-            YamlFileLoader.load_yaml_file(nonexistent_file)
+            YamlFileLoader.load_file(nonexistent_file)
 
     def test_load_yaml_file_invalid_format(self,yaml_file_invalid):
         """
         Testa o comportamento ao tentar carregar um arquivo YAML com formato inválido.
         """        
         with pytest.raises(YAMLError):
-            YamlFileLoader.load_yaml_file(yaml_file_invalid)
+            YamlFileLoader.load_file(yaml_file_invalid)
 
     @pytest.mark.skipif(os.name == "nt", reason="chmod not reliable on Windows")
     def test_load_yaml_file_permission_denied(self, tmp_path):
@@ -103,7 +103,7 @@ class TestYamlFileLoader:
         tmp_file.chmod(0o000)
 
         with pytest.raises(PermissionError):
-            YamlFileLoader.load_yaml_file(tmp_file)
+            YamlFileLoader.load_file(tmp_file)
 
     def test_load_yaml_not_yaml_file(self, tmp_path):
         """
@@ -115,7 +115,7 @@ class TestYamlFileLoader:
         tmp_file.write_text("Just some text content.")
 
         with pytest.raises(ValueError):
-            YamlFileLoader.load_yaml_file(tmp_file)   
+            YamlFileLoader.load_file(tmp_file)   
         
 class TestYamlLoaderFolderContext:
     @pytest.fixture
@@ -145,7 +145,7 @@ class TestYamlLoaderFolderContext:
         """
         Testa o carregamento bem-sucedido de uma pasta contendo arquivos YAML.
         """
-        results = YamlDirectoryLoader().load_yaml_directory(yaml_folder)
+        results = YamlDirectoryLoader().load_directory(yaml_folder)
 
         assert len(results) == 2
         names = {item['name'] for item in results.values()}
@@ -159,7 +159,7 @@ class TestYamlLoaderFolderContext:
         empty_folder = tmp_path / "empty_yaml_folder"
         empty_folder.mkdir()
 
-        results = YamlDirectoryLoader().load_yaml_directory(empty_folder)
+        results = YamlDirectoryLoader().load_directory(empty_folder)
 
         assert results == {}
         assert len(results) == 0
@@ -172,7 +172,7 @@ class TestYamlLoaderFolderContext:
         invalid_file.write_text("a: [1, 2")
 
         with pytest.raises(YAMLError):
-            YamlDirectoryLoader().load_yaml_directory(yaml_folder)
+            YamlDirectoryLoader().load_directory(yaml_folder)
 
     def test_load_yaml_folder_nonexistent_path(self):
         """
@@ -181,7 +181,7 @@ class TestYamlLoaderFolderContext:
         nonexistent_path = "nonexistent_folder"
 
         with pytest.raises(FileNotFoundError):
-            YamlDirectoryLoader().load_yaml_directory(nonexistent_path)
+            YamlDirectoryLoader().load_directory(nonexistent_path)
 
     def test_load_yaml_folder_mixed_files(self, yaml_folder):
         """
@@ -190,7 +190,7 @@ class TestYamlLoaderFolderContext:
         non_yaml_file = yaml_folder / "not_a_yaml.txt"
         non_yaml_file.write_text("Just some text content.")
 
-        results = YamlDirectoryLoader().load_yaml_directory(yaml_folder)
+        results = YamlDirectoryLoader().load_directory(yaml_folder)
 
         assert len(results) == 2
         names = {item['name'] for item in results.values()}

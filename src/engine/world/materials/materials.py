@@ -5,7 +5,7 @@ Módulo para definir os materiais e suas propriedades para a geração de mundo
 
 """
 
-from src.engine.world.materials.materials_registry import MaterialsRegistry
+from src.engine.config.registry.materials_registry import MaterialsRegistry
 
 
 class Material:

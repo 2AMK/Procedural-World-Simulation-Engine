@@ -13,7 +13,9 @@ import os
 from typing import Any, Dict, Union
 import yaml
 
-class YamlFileLoader:
+from src.engine.config.loaders.base_loader import BaseFileLoader, BaseDirectoryLoader
+
+class YamlFileLoader(BaseFileLoader):
     """
     Classe utilitária para carregar arquivos YAML.
     """
@@ -45,7 +47,7 @@ class YamlFileLoader:
         return extracted_extension == '.yaml' or extracted_extension == '.yml'
 
     @staticmethod
-    def load_yaml_file(file_path: Union[str, os.PathLike]) -> Dict[str, Any]:
+    def load_file(file_path: Union[str, os.PathLike]) -> Dict[str, Any]:
         """
         Carrega um arquivo YAML e retorna seu conteúdo como um dicionário.
 
@@ -78,16 +80,16 @@ class YamlFileLoader:
         return data
     
 
-class YamlDirectoryLoader:
+class YamlDirectoryLoader(BaseDirectoryLoader):
     """
     Classe utilitária para carregar todos os arquivos YAML em um diretório.
     Utiliza a classe YamlFileLoader para carregar cada arquivo individualmente.
     """
     def __init__(self):
         self.yaml_loader = YamlFileLoader()
-        
+       
 
-    def load_yaml_directory(self, directory_path: Union[str, os.PathLike]) -> Dict[str, Any]:
+    def load_directory(self, directory_path: Union[str, os.PathLike]) -> Dict[str, Any]:
         """
         Carrega todos os arquivos YAML em um diretório e retorna um dicionário
         com o nome do arquivo (sem extensão) como chave e o conteúdo como valor.
@@ -116,16 +118,9 @@ class YamlDirectoryLoader:
                 extracted_extension = os.path.splitext(file_path)[1].lower()
                 if extracted_extension not in ('.yaml', '.yml'):
                     continue
-                data = self.yaml_loader.load_yaml_file(file_path)
+                data = self.yaml_loader.load_file(file_path)
                 key = os.path.splitext(filename)[0]
                 yaml_data[key] = data
             except (PermissionError, FileNotFoundError) as e:
                 print(f"Erro ao carregar o arquivo {filename}: {e}")
         return yaml_data
-    
-    
-    def validate_yaml(self, yaml_data: dict) -> bool:
-        """Função para validar o schema do YAML carregado.
-        Implementar conforme a necessidade futura."""
-        return True
-        # Implementar validação de schema conforme necessário

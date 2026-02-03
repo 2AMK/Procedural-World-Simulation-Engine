@@ -9,7 +9,7 @@ para facilitar o acesso e a manipulação dos materiais.
 
 from typing import Dict
 from src.engine.world.materials import materials
-from src.utils.yaml_loader import load_yaml_file
+
 
 
 class MaterialsRegistry:
@@ -29,7 +29,6 @@ class MaterialsRegistry:
 
         :param file_path: Caminho para o arquivo YAML contendo os materiais.
         """
-        self.materials.data = load_yaml_file(file_path)
         for materials_id, material_data in self.materials.data.items():
             self.register_material(materials_id, material_data)
             
