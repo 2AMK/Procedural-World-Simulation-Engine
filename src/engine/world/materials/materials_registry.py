@@ -8,6 +8,8 @@ para facilitar o acesso e a manipulação dos materiais.
 """
 
 from typing import Dict
+from src.engine.world.materials import materials
+from src.utils.yaml_loader import load_yaml_file
 
 
 class MaterialsRegistry:
@@ -16,8 +18,21 @@ class MaterialsRegistry:
     """
 
     def __init__(self):
+        """
+        Inicializa o registro de materiais.
+        """
         self.materials: Dict[str, dict] = {}
 
+    def load_materials_from_yaml(self, file_path: str) -> None:
+        """
+        Carrega materiais de um arquivo YAML e os registra no registro.
+
+        :param file_path: Caminho para o arquivo YAML contendo os materiais.
+        """
+        self.materials.data = load_yaml_file(file_path)
+        for materials_id, material_data in self.materials.data.items():
+            self.register_material(materials_id, material_data)
+            
     def register_material(self, material_id: str, material_data: dict) -> None:
         """
         Registra um novo material no registro.
